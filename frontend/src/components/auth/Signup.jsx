@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Briefcase } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { USER_API_END_POINT } from '@/utills/constant';
+import { toast } from 'sonner';
 
 const Signup = () => {
 
@@ -13,7 +16,7 @@ const Signup = () => {
         phoneNumber: "",
         file: ""
     });
-
+    const navigate = useNavigate();
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -21,11 +24,35 @@ const Signup = () => {
     const changeFileHandler = (e) => {
         setInput({ ...input, file: e.target.files })
     };
-    const SignupHandler = (e) => {
+    const SignupHandler = async (e) => {
 
         e.preventDefault();
-        console.log(input);
 
+        try {
+            let formData = new FormData();
+            formData.append("fullname", input.fullname);
+            formData.append("email", input.email);
+            formData.append("password", input.password);
+            formData.append("phoneNumber", input.phoneNumber);
+            formData.append("role", input.role);
+            formData.append("file", input.file);
+
+            const response = await axios.post(`${USER_API_END_POINT}/register`, formData);
+            if (response.data.message) {
+                toast.success("Signup Successfully", {
+                    className: "!bg-green-500 !text-white !border-green-500",
+                })
+            };
+
+            navigate("/login")
+
+        } catch (error) {
+            console.log(error.response);
+            toast.error(error.response.data.message, {
+                className: "!bg-red-500 !text-white !border-red-500",
+            });
+
+        }
     }
     return (
         <>

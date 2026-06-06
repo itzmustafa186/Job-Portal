@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Briefcase } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
+import axios from 'axios';
+import { USER_API_END_POINT } from '@/utills/constant';
 
 const Login = () => {
 
@@ -20,12 +23,30 @@ const Login = () => {
     const changeFileHandler = (e) => {
         setInput({ ...input, file: e.target.files })
     };
-    const loginHandler = (e) => {
+    const loginHandler = async (e) => {
 
         e.preventDefault();
-        console.log(input);
+        try {
 
-    }
+
+            const response = await axios.post(`${USER_API_END_POINT}/login`, input);
+            if (response.data.message) {
+
+
+                toast.success("Login Successfully", {
+                    className: "!bg-green-500 !text-white !border-green-500",
+                })
+            }
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message, {
+                className: "!bg-red-500 !text-white !border-red-500",
+            });
+
+        };
+
+    };
     return (
         <>
             <Navbar />
