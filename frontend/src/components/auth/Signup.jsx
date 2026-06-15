@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import Navbar from '../shared/Navbar'
-import { Briefcase } from "lucide-react";
+import { Briefcase, Loader2 } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { USER_API_END_POINT } from '@/utills/constant';
 import { toast } from 'sonner';
+import { setLoading } from '@/redux/authSlice/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import Footer from '../Footer';
 
 const Signup = () => {
 
@@ -12,23 +15,30 @@ const Signup = () => {
         fullname: "",
         email: "",
         password: "",
-        role: "",
+        role: "student",
         phoneNumber: "",
         file: ""
     });
+
+    const dispatch = useDispatch();
+    const { loading } = useSelector((store) => store.auth);
+   
+
+
     const navigate = useNavigate();
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
 
     const changeFileHandler = (e) => {
-        setInput({ ...input, file: e.target.files })
+        setInput({ ...input, file: e.target.files[0] })
     };
     const SignupHandler = async (e) => {
 
         e.preventDefault();
 
         try {
+            dispatch(setLoading(true))
             let formData = new FormData();
             formData.append("fullname", input.fullname);
             formData.append("email", input.email);
@@ -52,6 +62,8 @@ const Signup = () => {
                 className: "!bg-red-500 !text-white !border-red-500",
             });
 
+        } finally {
+            dispatch(setLoading(false))
         }
     }
     return (
@@ -160,12 +172,24 @@ const Signup = () => {
                             />
                         </div>
 
-                        <button
-                            type="submit"
-                            className="w-full rounded-lg bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700"
-                        >
-                            Create Account
-                        </button>
+                        {
+                            loading ? (
+                                <button
+                                    disabled
+                                    className="flex w-full items-center justify-center rounded-lg bg-blue-600 py-3 font-medium text-white"
+                                >
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                      <span className='ps-3'>Please Wait</span>
+                                </button>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="w-full rounded-lg bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700"
+                                >
+                                    Create Account
+                                </button>
+                            )
+                        }
                     </form>
 
                     {/* Divider */}
@@ -192,6 +216,7 @@ const Signup = () => {
                     </p>
                 </div>
             </div>
+            <Footer/>
         </>
     )
 }

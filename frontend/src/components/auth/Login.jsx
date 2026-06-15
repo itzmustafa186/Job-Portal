@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import Navbar from '../shared/Navbar'
-import { Briefcase } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Briefcase, Loader2 } from "lucide-react";
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { USER_API_END_POINT } from '@/utills/constant';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading, setUser } from '@/redux/authSlice/authSlice';
+import Footer from '../Footer';
 
 const Login = () => {
 
@@ -12,10 +15,14 @@ const Login = () => {
 
         email: "",
         password: "",
-        role: "",
+        role: "student",
 
     });
 
+    const dispatch = useDispatch();
+    const { loading } = useSelector((store) => store.auth);
+    const navigate = useNavigate();
+    ;
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -27,16 +34,23 @@ const Login = () => {
 
         e.preventDefault();
         try {
+            dispatch(setLoading(true))
 
-
-            const response = await axios.post(`${USER_API_END_POINT}/login`, input);
+            const response = await axios.post(`${USER_API_END_POINT}/login`,
+                input,
+                {
+                    withCredentials: true,
+                });
             if (response.data.message) {
+                dispatch(setUser(response.data.userData))
 
 
                 toast.success("Login Successfully", {
                     className: "!bg-green-500 !text-white !border-green-500",
                 })
-            }
+            };
+
+            navigate("/")
 
         } catch (error) {
             console.log(error);
@@ -44,7 +58,9 @@ const Login = () => {
                 className: "!bg-red-500 !text-white !border-red-500",
             });
 
-        };
+        } finally {
+            dispatch(setLoading(false));
+        }
 
     };
     return (
@@ -116,13 +132,25 @@ const Login = () => {
                                 <option>recruiter</option>
                             </select>
                         </div>
+                        {
+                            loading ? (
+                                <button
+                                    disabled
+                                    className="flex w-full items-center justify-center rounded-lg bg-blue-600 py-3 font-medium text-white"
+                                >
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                 <span className='ps-3'>Please Wait</span>
+                                </button>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="w-full rounded-lg bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700"
+                                >
+                                    Login
+                                </button>
+                            )
+                        }
 
-                        <button
-                            type="submit"
-                            className="w-full rounded-lg bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700"
-                        >
-                            Login
-                        </button>
                     </form>
 
                     {/* Divider */}
@@ -148,6 +176,7 @@ const Login = () => {
                     </p>
                 </div>
             </div>
+            <Footer/>
         </>
     )
 }

@@ -77,18 +77,29 @@ export const getALlJobs = async (req, res) => {
 export const getJobById = async (req, res) => {
     try {
         const jobId = req.params.id;
-        const job = await Job.findById(jobId);
+
+        const job = await Job.findById(jobId)
+            .populate("company")
+            .populate({
+                path: "applications",
+                populate: {
+                    path: "applicant"
+                }
+            });
+
         if (!job) {
             return res.status(400).json({
-                messsage: "Job not found",
+                message: "Job not found",
                 success: false
-            })
-        };
+            });
+        }
+
         return res.status(200).json({
-            message: "job found Successfully",
+            message: "Job found Successfully",
             job,
             success: true
-        })
+        });
+
     } catch (error) {
         return res.status(500).json({
             message: "Internal Server Error",
