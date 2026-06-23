@@ -51,52 +51,17 @@ const Footer = () => {
                 </Link>
               </li>
 
-              <li>
-                <Link to={"/"} className="hover:text-blue-400">
-                  Companies
-                </Link>
-              </li>
+              
 
               <li>
-                <Link to={"/"} className="hover:text-blue-400">
+                <Link to={"/contact"} className="hover:text-blue-400">
                   Contact Us
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Categories */}
-          <div>
-            <h3 className="mb-5 text-lg font-semibold text-white">
-              Categories
-            </h3>
-
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className="hover:text-blue-400">
-                  Frontend Developer
-                </a>
-              </li>
-
-              <li>
-                <a href="#" className="hover:text-blue-400">
-                  Backend Developer
-                </a>
-              </li>
-
-              <li>
-                <a href="#" className="hover:text-blue-400">
-                  Full Stack Developer
-                </a>
-              </li>
-
-              <li>
-                <a href="#" className="hover:text-blue-400">
-                  AI Engineer
-                </a>
-              </li>
-            </ul>
-          </div>
+       
 
           {/* Contact */}
           <div>
@@ -120,10 +85,7 @@ const Footer = () => {
                 <span>Karachi, Pakistan</span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <Globe size={18} />
-                <span>www.jobportal.com</span>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -135,19 +97,7 @@ const Footer = () => {
               © 2026 Job Portal. All rights reserved.
             </p>
 
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-blue-400">
-                Privacy Policy
-              </a>
-
-              <a href="#" className="hover:text-blue-400">
-                Terms of Service
-              </a>
-
-              <a href="#" className="hover:text-blue-400">
-                Help Center
-              </a>
-            </div>
+           
           </div>
         </div>
 

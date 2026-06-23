@@ -1,5 +1,7 @@
 import express from "express";
 import { Comapny } from "../models/companySchema.js";
+import getDataUri from "../utils/datauri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const registerCompany = async (req, res) => {
     try {
@@ -41,8 +43,8 @@ export const registerCompany = async (req, res) => {
 export const getCompany = async (req, res) => {
     try {
         const userId = req.id;
-        let company = await Comapny.find({ userId });
-        if (!company) {
+        let companies = await Comapny.find({ userId });
+        if (!companies) {
             return res.status(400).json({
                 message: "Companies not found",
                 success: false
@@ -50,8 +52,8 @@ export const getCompany = async (req, res) => {
         };
         return res.status(200).json({
             message: "Companies found Successfully",
-            company,
-            success: false
+            companies,
+            success: true
         });
 
     } catch (error) {
@@ -77,7 +79,7 @@ export const getCompanyById = async (req, res) => {
         return res.status(200).json({
             message: "Company found Successfully",
             company,
-            success: false
+            success: true
         });
     } catch (error) {
         console.log(error);
@@ -93,8 +95,11 @@ export const updateCompany = async (req, res) => {
     try {
         const { name, description, website, location } = req.body;
         const file = req.file;
+        const fileUri = getDataUri(file);
+        const cloudRespones = await cloudinary.uploader.upload(fileUri.content)
+        const logo = cloudRespones.secure_url;
 
-        const updateData = { name, description, website, location };
+        const updateData = { name, description, website, location, logo };
 
         const company = await Comapny.findByIdAndUpdate(req.params.id, updateData, { new: true });
 
@@ -107,7 +112,7 @@ export const updateCompany = async (req, res) => {
         return res.status(200).json({
             message: "Company information updated Successfully",
             company,
-            success: false
+            success: true
         });
     } catch (error) {
         console.log(error);

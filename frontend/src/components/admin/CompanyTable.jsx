@@ -1,94 +1,126 @@
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
-import { Edit2 } from "lucide-react";
-
-const companies = [
-    {
-        _id: "1",
-        name: "Google",
-        location: "California",
-        website: "google.com",
-        date: "12/6/26"
-    },
-    {
-        _id: "2",
-        name: "Microsoft",
-        location: "Washington",
-        website: "microsoft.com",
-        date: "12/6/26"
-    },
-    {
-        _id: "3",
-        name: "Amazon",
-        location: "Seattle",
-        website: "amazon.com",
-        date: "12/6/26"
-    },
-];
+import { Edit2, Building2 } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CompanyTable = () => {
-    return (
-        <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Company Name</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead>Website</TableHead>
-                        <TableHead>Date</TableHead>
+  const navigate = useNavigate();
 
-                        <TableHead className="text-right">
-                            Action
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
+  const { companies } = useSelector(
+    (store) => store.company
+  );
 
-                <TableBody>
-                    {companies.map((company) => (
-                        <TableRow key={company._id}>
-                            <TableCell className="font-medium">
-                                {company.name}
-                            </TableCell>
+  return (
+    <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Company Name</TableHead>
+            <TableHead>Location</TableHead>
+            <TableHead>Website</TableHead>
+            <TableHead>Created At</TableHead>
+            <TableHead className="text-right">
+              Action
+            </TableHead>
+          </TableRow>
+        </TableHeader>
 
-                            <TableCell>
-                                {company.location}
-                            </TableCell>
+        <TableBody>
+          {companies?.length > 0 ? (
+            companies.map((company) => (
+              <TableRow
+                key={company._id}
+                className="hover:bg-gray-50"
+              >
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-4">
+                    {company.logo ? (
+                      <img
+                        src={company.logo}
+                        alt={company.name}
+                        className="h-10 w-10 rounded-lg object-cover"
+                      />
+                    ) : (
+                      <div className="rounded-lg bg-blue-100 p-2">
+                        <Building2
+                          size={18}
+                          className="text-blue-600"
+                        />
+                      </div>
+                    )}
 
-                            <TableCell>
-                                {company.website}
-                            </TableCell>
-                            <TableCell>
-                                {company.date}
-                            </TableCell>
+                    <span>{company.name}</span>
+                  </div>
+                </TableCell>
 
-                            <TableCell className="text-right">
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                >
-                                    <Edit2 size={16} />
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                <TableCell>
+                  {company.location || "N/A"}
+                </TableCell>
 
-            {companies.length === 0 && (
-                <div className="p-10 text-center text-gray-500">
-                    No companies found
+                <TableCell>
+                  {company.website ? (
+                company.website
+                  ) : (
+                    "N/A"
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  {company.createdAt?.split("T")[0]}
+                </TableCell>
+
+                <TableCell className="text-right">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() =>
+                      navigate(
+                        `/admin/companies/${company._id}`
+                      )
+                    }
+                  >
+                    <Edit2 size={16} />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell
+                colSpan={5}
+                className="h-40 text-center"
+              >
+                <div className="flex flex-col items-center gap-3">
+                  <Building2
+                    size={40}
+                    className="text-gray-300"
+                  />
+
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    No Companies Found
+                  </h3>
+
+                  <p className="text-sm text-gray-500">
+                    Create your first company to start
+                    posting jobs.
+                  </p>
                 </div>
-            )}
-        </div>
-    );
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
 };
 
 export default CompanyTable;

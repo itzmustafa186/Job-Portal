@@ -2,13 +2,13 @@ import Navbar from "../shared/Navbar";
 import CompanyTable from "./CompanyTable";
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
+import useGetAllCompanies from "@/Hooks/useGetAllCompanies";
+import AdminJobTable from "./AdminJobTable";
 
 import useGetAllAdminJob from "@/Hooks/useGetAllAdminJobs";
-import useGetAllCompanies from "@/Hooks/useGetAllCompanies";
 
-const AdminCompanies = () => {
-  useGetAllAdminJob();
-  useGetAllCompanies();
+const AdminJobs = () => {
+useGetAllAdminJob();
   return (
     <>
       <Navbar />
@@ -20,28 +20,28 @@ const AdminCompanies = () => {
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                Companies
+                Jobs
               </h1>
 
               <p className="mt-1 text-gray-500">
-                Manage your registered companies
+                Manage your registered Jobs
               </p>
             </div>
 
             <Link
-              to="/admin/companies/create"
+              to="/admin/jobs/post"
               className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-white transition hover:bg-blue-700"
             >
               <Plus size={18} />
-              New Company
+              New Job
             </Link>
           </div>
 
-          <CompanyTable />
+          <AdminJobTable />
         </div>
       </div>
     </>
   );
 };
 
-export default AdminCompanies;
+export default AdminJobs;

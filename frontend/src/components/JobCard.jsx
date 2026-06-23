@@ -22,7 +22,7 @@ const JobCard = ({ job }) => {
             <div className="flex items-start pt-5 justify-between">
                 <div className="flex gap-4">
                     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100">
-                        <Briefcase className="text-blue-600" size={24} />
+                        <img src={job?.company?.logo} alt={job?.company?.name} />
                     </div>
 
                     <div>
@@ -82,7 +82,7 @@ const JobCard = ({ job }) => {
                     View Details
                 </button>
 
-                <button className="flex-1 rounded-xl bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700">
+                <button onClick={() => navigate(`/description/${job?._id}`)} className="flex-1 rounded-xl bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700">
                     Apply Now
                 </button>
 

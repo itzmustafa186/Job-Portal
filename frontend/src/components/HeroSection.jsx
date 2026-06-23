@@ -1,9 +1,22 @@
+import { setSearchedQuery } from "@/redux/jobSlice/jobSlice";
 import { Search } from "lucide-react";
-import  CountUp  from "react-countup";
+import { useState } from "react";
+import CountUp from "react-countup";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function HeroSection() {
+  const [query, setQuery] = useState();
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
+  const searchJobHandler = ()=>{
+    dispatch(setSearchedQuery(query));
+    navigate("/browse")
+  };
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 via-white to-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
@@ -43,13 +56,14 @@ export default function HeroSection() {
                 <Search className="ml-2 h-5 w-5 text-gray-400" />
 
                 <input
+                  onChange={(e) => setQuery(e.target.value)}
                   type="text"
                   placeholder="Search jobs, skills, companies..."
                   className="w-full px-3 py-3 outline-none"
                 />
               </div>
 
-              <button className="w-full rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 sm:w-auto">
+              <button onClick={searchJobHandler} className="w-full rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700 sm:w-auto">
                 Search Jobs
               </button>
             </div>

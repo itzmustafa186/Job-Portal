@@ -1,17 +1,15 @@
 import { formatDistanceToNow } from "date-fns";
 import { MapPin, Briefcase, Clock3, Bookmark } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const LatestJobCard = ({ job }) => {
+  const navigate = useNavigate();
   return (
     <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
       <div className="flex items-start justify-between">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-xl font-bold text-white">
-          G
-        </div>
+      
 
-        <button className="rounded-lg p-2 hover:bg-gray-100">
-          <Bookmark size={18} />
-        </button>
+      
       </div>
 
       <div className="mt-5">
@@ -52,7 +50,7 @@ const LatestJobCard = ({ job }) => {
                       
         </div>
 
-        <button className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+        <button  onClick={() => navigate(`/description/${job?._id}`)} className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
           Apply Now
         </button>
       </div>

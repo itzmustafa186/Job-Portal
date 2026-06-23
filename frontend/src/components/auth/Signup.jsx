@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Briefcase, Loader2 } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,6 +11,9 @@ import Footer from '../Footer';
 
 const Signup = () => {
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    })
     let [input, setInput] = useState({
         fullname: "",
         email: "",
@@ -21,8 +24,8 @@ const Signup = () => {
     });
 
     const dispatch = useDispatch();
-    const { loading } = useSelector((store) => store.auth);
-   
+    const { loading, user } = useSelector((store) => store.auth);
+
 
 
     const navigate = useNavigate();
@@ -65,7 +68,13 @@ const Signup = () => {
         } finally {
             dispatch(setLoading(false))
         }
-    }
+    };
+    useEffect(() => {
+        if (user) {
+            navigate("/")
+
+        }
+    }, [user, navigate])
     return (
         <>
             <Navbar />
@@ -179,7 +188,7 @@ const Signup = () => {
                                     className="flex w-full items-center justify-center rounded-lg bg-blue-600 py-3 font-medium text-white"
                                 >
                                     <Loader2 className="h-4 w-4 animate-spin" />
-                                      <span className='ps-3'>Please Wait</span>
+                                    <span className='ps-3'>Please Wait</span>
                                 </button>
                             ) : (
                                 <button
@@ -216,7 +225,7 @@ const Signup = () => {
                     </p>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     )
 }

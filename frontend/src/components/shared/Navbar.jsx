@@ -23,6 +23,7 @@ import axios from "axios";
 import { USER_API_END_POINT } from "@/utills/constant";
 import { setUser } from "@/redux/authSlice/authSlice";
 import { toast } from "sonner";
+import { persistor } from "@/redux/store";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,8 +43,11 @@ export default function Navbar() {
         }
       );
 
+
       if (response.data.success) {
-        dispatch(setUser(null));
+       
+dispatch(setUser(null))
+        await persistor.purge();
 
         toast.success(response.data.message, {
           className:
@@ -121,7 +125,7 @@ export default function Navbar() {
           )}
         </div>
 
-      
+
 
         {/* Desktop Right Side */}
         <div className="hidden items-center gap-3 md:flex">
@@ -217,7 +221,7 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="border-t bg-white md:hidden">
           <div className="space-y-4 p-4">
-            
+
 
             {user?.role === "recruiter" ? (
               <>

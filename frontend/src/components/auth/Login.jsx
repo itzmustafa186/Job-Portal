@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../shared/Navbar'
 import { Briefcase, Loader2 } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,9 +18,11 @@ const Login = () => {
         role: "student",
 
     });
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    })
     const dispatch = useDispatch();
-    const { loading } = useSelector((store) => store.auth);
+    const { loading, user } = useSelector((store) => store.auth);
     const navigate = useNavigate();
     ;
     const changeEventHandler = (e) => {
@@ -63,6 +65,13 @@ const Login = () => {
         }
 
     };
+
+    useEffect(() => {
+        if (user) {
+            navigate("/")
+            
+        }
+    }, [user, navigate])
     return (
         <>
             <Navbar />
@@ -139,7 +148,7 @@ const Login = () => {
                                     className="flex w-full items-center justify-center rounded-lg bg-blue-600 py-3 font-medium text-white"
                                 >
                                     <Loader2 className="h-4 w-4 animate-spin" />
-                                 <span className='ps-3'>Please Wait</span>
+                                    <span className='ps-3'>Please Wait</span>
                                 </button>
                             ) : (
                                 <button
@@ -176,7 +185,7 @@ const Login = () => {
                     </p>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     )
 }

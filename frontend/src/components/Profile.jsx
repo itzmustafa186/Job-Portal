@@ -1,11 +1,18 @@
 import { Mail, Phone, FileText, PenSquare } from "lucide-react";
 import Navbar from "./shared/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
 import Footer from "./Footer";
 
+import useGetAppliedJobs from "@/Hooks/useGetAppliedJobs";
+import AppliedJobTable from "./AppliedJobTable";
+
 const Profile = () => {
+        useEffect(() => {
+            window.scrollTo(0, 0);
+        },[])
+    useGetAppliedJobs();
     const { user } = useSelector((store) => store.auth)
 
     const [open, setOpen] = useState(false);
@@ -106,6 +113,13 @@ const Profile = () => {
                             )}
 
 
+                        </div>
+                        <div className="mt-8 border-t pt-8">
+                            <h2 className="mb-6 text-xl font-semibold">
+                                Applied Jobs
+                            </h2>
+
+                            <AppliedJobTable />
                         </div>
 
                     </div>

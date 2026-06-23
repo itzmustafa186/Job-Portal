@@ -10,6 +10,13 @@ import JobDescription from './components/JobDescription'
 import AdminCompanies from './components/admin/AdminCompanies'
 import CreateCompany from './components/admin/CreateCompany'
 import CompanySetup from './components/admin/CompanySetup'
+import AdminJobs from './components/admin/AdminJobs'
+import PostJob from './components/admin/PostJob'
+import Applicants from './components/admin/Applicants'
+import Browse from './components/Browse'
+import ProtectedRoute from './components/admin/ProtectedRoute'
+import Contact from './components/Contact'
+
 
 
 
@@ -37,21 +44,41 @@ function App() {
       element: <Jobs />
     },
     {
+      path: "/browse",
+      element: <Browse />
+    },
+    {
+      path: "/contact",
+      element: <Contact />
+    },
+    {
       path: "/description/:id",
       element: <JobDescription />
     },
     // Admin Side
     {
       path: "/admin/companies",
-      element: <AdminCompanies />
+      element: <ProtectedRoute><AdminCompanies /></ProtectedRoute>
     },
     {
       path: "/admin/companies/create",
-      element: <CreateCompany />
+      element: <ProtectedRoute><CreateCompany /></ProtectedRoute>
     },
     {
       path: "/admin/companies/:id",
-      element: < CompanySetup />
+      element: <ProtectedRoute>< CompanySetup /></ProtectedRoute>
+    },
+    {
+      path: "/admin/jobs",
+      element: <ProtectedRoute> < AdminJobs /></ProtectedRoute>
+    },
+    {
+      path: "/admin/jobs/post",
+      element: <ProtectedRoute>< PostJob /></ProtectedRoute>
+    },
+    {
+      path: "/admin/jobs/:id/applicants",
+      element: <ProtectedRoute>< Applicants /></ProtectedRoute>
     },
   ])
 

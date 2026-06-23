@@ -1,7 +1,7 @@
 import { MapPin, Briefcase, IndianRupee, Clock3 } from "lucide-react";
 import Navbar from "./shared/Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setSingleJob } from "@/redux/jobSlice/jobSlice";
 import axios from "axios";
 import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utills/constant";
@@ -10,7 +10,10 @@ import Footer from "./Footer";
 import { toast } from "sonner";
 
 const JobDescription = () => {
-
+    const navigate = useNavigate();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
     const dispatch = useDispatch();
     const { singleJob } = useSelector((store) => store.job);
     const { user } = useSelector((store) => store.auth);
@@ -20,21 +23,28 @@ const JobDescription = () => {
         application =>
             application.applicant?._id?.toString() === user?._id?.toString()
     );
-    let [ isApplied, setIsApplied ] = useState(isInitiallyApplied);
+    let [isApplied, setIsApplied] = useState(isInitiallyApplied);
     const applyJobHandler = async () => {
+        if (!user) {
+            navigate("/")
+            toast.error("Please Login First", {
+                className: "!bg-red-500 !text-white !border-red-500",
+            });
+
+        }
         if (isApplied) return;
         try {
             const response = await axios.get(`${APPLICATION_API_END_POINT}/apply/${jobId}`, { withCredentials: true });
             console.log(response.data);
             if (response.data.success) {
                 setIsApplied(true);
-                const updatedSingleJob = {...singleJob, applications: [...singleJob.applications, { applicant: user?._id }] };
+                const updatedSingleJob = { ...singleJob, applications: [...singleJob.applications, { applicant: user?._id }] };
                 dispatch(setSingleJob(updatedSingleJob));
                 toast.success(response.data.message);
             }
 
         } catch (error) {
-            console.log(error?.response?.data?.message);
+            
             toast.error(error?.response?.data?.message)
         }
 
@@ -61,8 +71,8 @@ const JobDescription = () => {
         }
 
         fetchSingleJobs()
-    }, [dispatch,jobId,user?._id])
-
+    }, [dispatch, jobId, user?._id])
+   
     return (
         <>
             <Navbar />
