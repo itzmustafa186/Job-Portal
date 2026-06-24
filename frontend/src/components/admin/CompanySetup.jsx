@@ -20,7 +20,7 @@ const CompanySetup = () => {
     description: "",
     website: "",
     location: "",
-    file: null,
+    file: "",
   });
   const [loading, setLoading] = useState();
 
@@ -50,7 +50,7 @@ const CompanySetup = () => {
       formData.append("location", input.location);
 
       if (input.file) {
-        formData.append("file", input.file);
+        formData.append("logo", input.file);
       }
 
       console.log([...formData.entries()]);
@@ -67,7 +67,7 @@ const CompanySetup = () => {
       };
 
     } catch (error) {
-      console.log(error?.response?.data?.message);
+      console.log(error.response);
       toast.error(error?.response?.data?.messsage, {
         className: "!bg-red-500 !text-white !border-red-500",
       })
