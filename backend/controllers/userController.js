@@ -121,7 +121,7 @@ export const login = async (req, res) => {
 
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "strict", secure: false }).json({
+        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "none", secure: true }).json({
             message: `WELCOME BACK ${user.fullname.toUpperCase()}`,
             userData,
             success: true
