@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://job-portal-frontend-lemon-one.vercel.app/" // Replace with your frontend URL
+      "https://job-portal-frontend-lemon-one.vercel.app" // Replace with your frontend URL
     ],
     credentials: true,
   })
