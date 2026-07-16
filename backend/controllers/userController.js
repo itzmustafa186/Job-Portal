@@ -20,14 +20,19 @@ export const register = async (req, res) => {
         const userProfilePhoto = req.files?.profilePhoto?.[0];
 
         let cloudResponse;
-
         if (userProfilePhoto) {
             const fileUri = getDataUri(userProfilePhoto);
 
             cloudResponse = await cloudinary.uploader.upload(
                 fileUri.content,
                 {
-                    resource_type: "auto"
+                    resource_type: "image",
+                    folder: "job-portal",
+                    transformation: [
+                        { width: 300, height: 300, crop: "fill" },
+                        { quality: "auto" },
+                        { fetch_format: "auto" }
+                    ]
                 }
             );
         }
@@ -192,6 +197,12 @@ export const updateProfile = async (req, res) => {
                 fileUri.content,
                 {
                     resource_type: "image",
+                    folder: "job-portal",
+                    transformation: [
+                        { width: 300, height: 300, crop: "fill" },
+                        { quality: "auto" },
+                        { fetch_format: "auto" }
+                    ]
                 }
             );
 
@@ -204,6 +215,7 @@ export const updateProfile = async (req, res) => {
                 fileUri.content,
                 {
                     resource_type: "auto",
+
                 }
             );
 

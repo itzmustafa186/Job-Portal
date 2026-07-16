@@ -20,7 +20,7 @@ const CompanySetup = () => {
     description: "",
     website: "",
     location: "",
-    file: "",
+    file: null
   });
   const [loading, setLoading] = useState();
 
@@ -88,7 +88,7 @@ const CompanySetup = () => {
         description: singleCompany.description || "",
         website: singleCompany.website || "",
         location: singleCompany.location || "",
-        file: singleCompany.logo || null,
+        file: null
       });
     }
   }, [singleCompany]);

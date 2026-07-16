@@ -90,7 +90,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             setOpen(false)
 
         } catch (error) {
-            console.log(error.response.data.message);
+            console.log(error?.response?.data?.message);
            toast.error(error.response?.data?.message || "Something went wrong", {
     className: "!bg-red-500 !text-white !border-red-500",
 });

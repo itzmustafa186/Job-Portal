@@ -73,6 +73,12 @@ const JobDescription = () => {
         fetchSingleJobs()
     }, [dispatch, jobId, user?._id])
    
+    useEffect(()=>{
+if(!user){
+    navigate("/")
+    toast.error("Login First")
+}
+    },[])
     return (
         <>
             <Navbar />

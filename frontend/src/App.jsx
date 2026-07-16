@@ -16,6 +16,7 @@ import Applicants from './components/admin/Applicants'
 import Browse from './components/Browse'
 import ProtectedRoute from './components/admin/ProtectedRoute'
 import Contact from './components/Contact'
+import { Suspense } from 'react'
 
 
 
@@ -84,7 +85,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={appRouter} />
+      <Suspense fallback={<div>Loading...</div>}>
+    <RouterProvider router={appRouter} />
+</Suspense>
     </>
   )
 }

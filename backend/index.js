@@ -43,5 +43,8 @@ app.get("/", (req, res) => {
   });
 });
 
-// Export for Vercel Serverless
+app.listen(process.env.PORT,()=>{
+  console.log("server");
+  
+})
 export default app;
