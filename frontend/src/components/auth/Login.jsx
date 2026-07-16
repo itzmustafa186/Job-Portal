@@ -6,11 +6,11 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { USER_API_END_POINT } from '@/utills/constant';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading, setUser } from '@/redux/authSlice/authSlice';
+import {  setUser } from '@/redux/authSlice/authSlice';
 import Footer from '../Footer';
 
 const Login = () => {
-
+let [loading ,setLoading]= useState(false);
     let [input, setInput] = useState({
 
         email: "",
@@ -22,7 +22,7 @@ const Login = () => {
         window.scrollTo(0, 0);
     })
     const dispatch = useDispatch();
-    const { loading, user } = useSelector((store) => store.auth);
+    const {  user } = useSelector((store) => store.auth);
     const navigate = useNavigate();
     ;
     const changeEventHandler = (e) => {
@@ -36,14 +36,14 @@ const Login = () => {
 
         e.preventDefault();
         try {
-            dispatch(setLoading(true))
+         setLoading(true)
 
             const response = await axios.post(`${USER_API_END_POINT}/login`,
                 input,
                 {
                     withCredentials: true,
                 });
-            if (response.data.message) {
+            if (response.data.success) {
                 dispatch(setUser(response.data.userData))
 
 
@@ -61,7 +61,7 @@ const Login = () => {
             });
 
         } finally {
-            dispatch(setLoading(false));
+           setLoading(false)
         }
 
     };
@@ -72,6 +72,10 @@ const Login = () => {
             
         }
     }, [user, navigate])
+
+    console.log("Loading:", loading);
+console.log("User:", user);
+
     return (
         <>
             <Navbar />

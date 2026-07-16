@@ -14,6 +14,7 @@ import { Loader2 } from "lucide-react";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
     const { user } = useSelector((store) => store.auth);
+    let [loading, setLoading] = useState(false);
 
     const [input, setInput] = useState({
         fullname: user?.fullname || "",
@@ -21,9 +22,10 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         phoneNumber: user?.phoneNumber || "",
         bio: user?.profile?.bio || "",
         skills: user?.profile?.skills?.join(", ") || "",
-        file: null,
+        resume: null,
+        profilePhoto: null
     });
-    const { loading } = useSelector((store) => store.auth);
+
     const changeEventHandler = (e) => {
         setInput({
             ...input,
@@ -31,17 +33,24 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         });
     };
     const dispatch = useDispatch();
-    const fileChangeHandler = (e) => {
+    const resumeHandler = (e) => {
         setInput({
             ...input,
-            file: e.target.files[0],
+            resume: e.target.files[0],
+        });
+    };
+
+    const profileHandler = (e) => {
+        setInput({
+            ...input,
+            profilePhoto: e.target.files[0],
         });
     };
 
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            dispatch(setLoading(true))
+            setLoading(true)
             const formData = new FormData();
 
             formData.append("fullname", input.fullname);
@@ -50,10 +59,13 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             formData.append("bio", input.bio);
             formData.append("skills", input.skills);
 
-            if (input.file) {
-                formData.append("file", input.file);
+            if (input.resume) {
+                formData.append("resume", input.resume);
             }
 
+            if (input.profilePhoto) {
+                formData.append("profilePhoto", input.profilePhoto);
+            }
             console.log([...formData.entries()]);
 
             // API Call Here
@@ -78,13 +90,13 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             setOpen(false)
 
         } catch (error) {
-            console.log(error.response.data);
-            toast.error(error.response, {
-                className: "!bg-red-500 !text-white !border-red-500",
-            });
+            console.log(error.response.data.message);
+           toast.error(error.response?.data?.message || "Something went wrong", {
+    className: "!bg-red-500 !text-white !border-red-500",
+});
 
         } finally {
-            dispatch(setLoading(false))
+            setLoading(false)
         }
 
 
@@ -166,11 +178,21 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
                     <div>
                         <label className="mb-1 block font-medium">
+                            profile Photo
+                        </label>
+                        <input
+                            type="file"
+                            onChange={profileHandler}
+                            className="w-full rounded-lg border px-4 py-3"
+                        />
+                    </div>
+                    <div>
+                        <label className="mb-1 block font-medium">
                             Resume
                         </label>
                         <input
                             type="file"
-                            onChange={fileChangeHandler}
+                            onChange={resumeHandler}
                             className="w-full rounded-lg border px-4 py-3"
                         />
                     </div>

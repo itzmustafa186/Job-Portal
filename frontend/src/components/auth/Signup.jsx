@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../Footer';
 
 const Signup = () => {
+    let [loading, setLoading] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -20,11 +21,11 @@ const Signup = () => {
         password: "",
         role: "student",
         phoneNumber: "",
-        file: ""
+        profilePhoto: ""
     });
 
     const dispatch = useDispatch();
-    const { loading, user } = useSelector((store) => store.auth);
+    const { user } = useSelector((store) => store.auth);
 
 
 
@@ -41,14 +42,14 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            dispatch(setLoading(true))
+            setLoading(true)
             let formData = new FormData();
             formData.append("fullname", input.fullname);
             formData.append("email", input.email);
             formData.append("password", input.password);
             formData.append("phoneNumber", input.phoneNumber);
             formData.append("role", input.role);
-            formData.append("file", input.file);
+            formData.append("profilePhoto", input.file);
 
             const response = await axios.post(`${USER_API_END_POINT}/register`, formData);
             if (response.data.message) {
@@ -66,7 +67,7 @@ const Signup = () => {
             });
 
         } finally {
-            dispatch(setLoading(false))
+            setLoading(false)
         }
     };
     useEffect(() => {
